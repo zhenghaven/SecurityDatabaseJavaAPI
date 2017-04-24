@@ -15,7 +15,7 @@ public class SecurityDB
 	 * A enum used as a return type for PostVideo method.
 	 *
 	 */
-	enum PostVideoErrorType
+	public enum PostVideoErrorType
 	{
 		Success,
 		InvalidResolution,
@@ -29,7 +29,7 @@ public class SecurityDB
 	 * A enum used as a return type for RaiseAlarm method.
 	 *
 	 */
-	enum RaiseAlarmErrorType
+	public enum RaiseAlarmErrorType
 	{
 		Success,
 		InvalidCameraUID,
