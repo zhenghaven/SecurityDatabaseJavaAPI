@@ -25,6 +25,23 @@ public class DatabaseTest {
 		
 		if(secDB != null)
 		{
+			Date alarmStartTime = new Date(System.currentTimeMillis());
+			SecurityDB.RaiseAlarmErrorType alarmResult = secDB.RaiseAlarm(alarmStartTime, 1800);
+			switch(alarmResult)
+			{
+			case Success:
+				System.out.println("Success!");
+				break;
+			case DatabaseRejected:
+			case InternalError:
+			case InvalidCameraUID:
+			case InvalidDuration:
+			default:
+				System.out.println("Error!");
+				System.out.println(secDB.GetLastErrorMessage());
+				break;
+			
+			}
 			File picFile = new File("pic1.png");
 			File videoFile = new File("video1.mp4");
 			
@@ -40,9 +57,9 @@ public class DatabaseTest {
 			
 			long duration = 6000000;
 			
-			Date startTime = new Date(System.currentTimeMillis());
+			Date videoStartTime = new Date(System.currentTimeMillis());
 			
-			SecurityDB.PostVideoErrorType postResult = secDB.PostVideo(startTime, duration, picFileData, videoFileData, 1280, 720, "mp4");
+			SecurityDB.PostVideoErrorType postResult = secDB.PostVideo(videoStartTime, duration, picFileData, videoFileData, 1280, 720, "mp4");
 			switch(postResult)
 			{
 			case Success:
