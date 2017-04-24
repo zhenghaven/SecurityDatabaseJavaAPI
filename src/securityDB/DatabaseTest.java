@@ -10,7 +10,7 @@ public class DatabaseTest {
 		SecurityDB secDB = null;
 		try 
 		{
-			secDB = new SecurityDB("security-db-mysql.cy89i85gvki0.us-west-2.rds.amazonaws.com:3306/security", "jbhz", "zxczxczxc");
+			secDB = new SecurityDB("security-db-mysql.cy89i85gvki0.us-west-2.rds.amazonaws.com:3306/security", "jbhz", "zxczxczxc", "Camera_UID_Here");
 			System.out.println("Connected!");
 		} 
 		catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) 
@@ -22,7 +22,7 @@ public class DatabaseTest {
 		
 		if(secDB != null)
 		{
-			secDB.Test();
+			
 		}
 	}
 
