@@ -4,13 +4,17 @@ import java.sql.*;
 import java.util.Date;
 
 /**
- * This class provides the interface to post surveillance videos, and raise alarm event to the security database.
+ * This class provides the interface to post surveillance videos, and raise alarm event to the security database. In order to use this API, make sure the mySQL JDBC driver is included as a jar lib.
  * @version 1.0
  * @author <a href="mailto:jabrack@mix.wvu.edu">Jordan Brack</a>,  <a href="mailto:hazheng@mix.wvu.edu">Haofan Zheng</a>
  *
  */
 public class SecurityDB 
 {
+	/**
+	 * A enum used as a return type for PostVideo method.
+	 *
+	 */
 	enum PostVideoErrorType
 	{
 		Success,
@@ -20,7 +24,11 @@ public class SecurityDB
 		DatabaseRejected,
 		InternalError
 	}
-	
+
+	/**
+	 * A enum used as a return type for RaiseAlarm method.
+	 *
+	 */
 	enum RaiseAlarmErrorType
 	{
 		Success,
@@ -61,6 +69,17 @@ public class SecurityDB
 		return result.getString(1);
 	}
 	
+	/**
+	 * The constructor for the SercurityDB class. The constructor will try to connect to the database. if the connection is successfully established, the connection will be maintained during the runtime. If the connection is failed, exception will be thrown.
+	 * @param address The database address including the port number and schema name. (eg. example.com:[port number here]/[schema name here])
+	 * @param username The username used to connect to the database.
+	 * @param password The password for that user.
+	 * @param cameraUID The UID of the camera that will be associated with this instance. The UID can be found on the webpage portal.
+	 * @throws InstantiationException Thrown when failed to create a instance of the mySQL JDBC driver.
+	 * @throws IllegalAccessException Thrown when failed to create a instance of the mySQL JDBC driver.
+	 * @throws ClassNotFoundException Thrown when failed to create a instance of the mySQL JDBC driver.
+	 * @throws SQLException Thrown when failed to connect to the database.
+	 */
 	public SecurityDB(final String address, final String username, final String password, final String cameraUID) 
 			throws InstantiationException, 
 			IllegalAccessException, 
@@ -75,6 +94,17 @@ public class SecurityDB
                 "user=" + username + "&password=" + password + "");
 	}
 	
+	/**
+	 * Post a video to the database.
+	 * @param startTime The start time (including date and time) of the video.
+	 * @param durationMicroSec The duration of the video in micro-second.
+	 * @param thumbnailData The binary data array of the thumbnail file (in *.png format) of this video.
+	 * @param videoData The binary data array of the video file.
+	 * @param resolutionWidth The resolution width of the video.
+	 * @param resolutionHeight The resolution height of the video.
+	 * @param videoFormat The format of the video (eg. *.mp4, *.mov, etc.)
+	 * @return The result of posting a video.
+	 */
 	public PostVideoErrorType PostVideo(
 			final Date startTime, 
 			final long durationMicroSec, 
@@ -131,6 +161,12 @@ public class SecurityDB
 		return PostVideoErrorType.Success;
 	}
 	
+	/**
+	 * Raise a new alarm to the security database. The spot of this alarm is same the spot of the camera that is associated with this instance.
+	 * @param startTime The start time of the alarm.
+	 * @param endTime The end time of the alarm.
+	 * @return The result of raising a alarm.
+	 */
 	public RaiseAlarmErrorType RaiseAlarm(
 			final Date startTime, 
 			final Date endTime
@@ -171,6 +207,12 @@ public class SecurityDB
 		return RaiseAlarmErrorType.Success;
 	}
 	
+	/**
+	 * Raise a new alarm to the security database. The spot of this alarm is same the spot of the camera that is associated with this instance.
+	 * @param startTime The start time of the alarm.
+	 * @param durationSec The duration of the alarm.
+	 * @return The result of raising a alarm.
+	 */
 	public RaiseAlarmErrorType RaiseAlarm(
 			final Date startTime, 
 			final int durationSec
@@ -216,6 +258,10 @@ public class SecurityDB
 		return RaiseAlarmErrorType.Success;
 	}
 	
+	/**
+	 * Get the error message from the last execution of PostVideo or RaiseAlarm. This error message is set to empty at the beginning of the execution of PostVideo and RaiseAlarm. And this error message will only be set when a SQLException was caught inside the PostVideo or RaiseAlarm method.
+	 * @return The error message from the last execution of PostVideo or RaiseAlarm.
+	 */
 	public final String GetLastErrorMessage()
 	{
 		return m_lastErrorMsg;
